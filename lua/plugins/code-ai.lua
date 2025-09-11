@@ -1,54 +1,98 @@
 return {
-  'jackMort/ChatGPT.nvim',
-  event = 'VeryLazy',
+  "olimorris/codecompanion.nvim",
+  dependencies = {
+    "nvim-lua/plenary.nvim",
+    "nvim-treesitter/nvim-treesitter",
+    "nvim-telescope/telescope.nvim", -- Optional: for enhanced UI
+    "hrsh7th/nvim-cmp", -- Optional: for autocompletion
+  },
   config = function()
-    require('chatgpt').setup {
-      openai_params = {
-        model = 'gpt-3.5-turbo',
-        frequency_penalty = 0,
-        presence_penalty = 0,
-        max_tokens = 4095,
-        temperature = 0.2,
-        top_p = 0.1,
-        n = 1,
-      },
-    }
-
-    local actions = {
-      'fix_bugs',
-      'explain_code',
-      'grammar_correction',
-      'complete_code',
-      'translate',
-      'keywords',
-      'code_readability_analysis',
-      'add_tests',
-      'docstring',
-      'optimize_code',
-      'roxygen_edit',
-      'summarize',
-    }
-
-    vim.keymap.set('n', '<leader>cgt', ':ChatGPT<CR>', { noremap = true, silent = true, desc = '[C]hat [G]PT' })
-
-    vim.keymap.set('n', '<leader>cgr', function()
-      require('fzf-lua').fzf_exec(actions, {
-        prompt = 'Select ChatGPT action: ',
-        actions = {
-          ['default'] = function(selected)
-            if selected and selected[1] then
-              vim.cmd('ChatGPTRun ' .. selected[1])
-            end
+    require("codecompanion").setup({
+      adapters = {
+        http = {
+          anthropic = function()
+            return require("codecompanion.adapters").extend("anthropic", {
+              env = {
+                api_key = "ANTHROPIC_API_KEY" -- This tells CodeCompanion to look for this env var
+              },
+              schema = {
+                model = {
+                  default = "claude-sonnet-4-20250514", -- Updated to Claude Sonnet 4
+                },
+              },
+            })
           end,
         },
-      })
-    end, { noremap = true, silent = true, desc = '[C]hat [G]PT [R]un with Selection' })
+      },
+      strategies = {
+        chat = {
+          adapter = "anthropic",
+        },
+        inline = {
+          adapter = "anthropic",
+        },
+        agent = {
+          adapter = "anthropic",
+        },
+      },
+      display = {
+        action_palette = {
+          width = 95,
+          height = 10,
+        },
+        chat = {
+          window = {
+            layout = "vertical", -- vertical|horizontal|buffer
+            width = 0.45,
+            height = 0.8,
+            opts = {
+              breakindent = true,
+              cursorcolumn = false,
+              foldcolumn = "0",
+              linebreak = true,
+              list = false,
+              signcolumn = "no",
+              spell = false,
+              wrap = true,
+            },
+          },
+        },
+      },
+      opts = {
+        log_level = "ERROR", -- TRACE|DEBUG|ERROR
+        send_code = true, -- Send code context with requests
+        use_default_actions = true,
+        use_default_chat_prompts = true,
+      },
+      -- Key mappings
+      keymaps = {
+        ["<C-s>"] = "keymaps.send",
+        ["<C-c>"] = "keymaps.close",
+        ["q"] = "keymaps.cancel_request",
+        ["gr"] = "keymaps.regenerate",
+        ["ga"] = "keymaps.codeblock_action",
+      },
+    })
+
+    -- Set up key mappings
+    local keymap = vim.keymap.set
+    local opts = { noremap = true, silent = true }
+
+    -- Main CodeCompanion commands
+    keymap("n", "<leader>cc", "<cmd>CodeCompanionActions<cr>", opts)
+    keymap("v", "<leader>cc", "<cmd>CodeCompanionActions<cr>", opts)
+    keymap("n", "<leader>co", "<cmd>CodeCompanion<cr>", opts)
+
+    -- Chat commands
+    keymap("n", "<leader>ct", "<cmd>CodeCompanionChat Toggle<cr>", opts)
+    keymap("v", "<leader>ca", "<cmd>CodeCompanionChat Add<cr>", opts)
+
+    -- Inline commands
+    keymap("n", "<leader>ci", "<cmd>CodeCompanionCmd<cr>", opts)
+    keymap("v", "<leader>ci", "<cmd>CodeCompanionCmd<cr>", opts)
+
+    -- Quick actions
+    keymap("v", "<leader>ce", "<cmd>CodeCompanionActions<cr>", opts)
+    keymap("v", "<leader>cg", "<cmd>CodeCompanionChat Add<cr>", opts)
   end,
-  dependencies = {
-    'MunifTanjim/nui.nvim',
-    'nvim-lua/plenary.nvim',
-    'folke/trouble.nvim',
-    'nvim-telescope/telescope.nvim',
-    'ibhagwan/fzf-lua', -- Add fzf-lua as a dependency
-  },
 }

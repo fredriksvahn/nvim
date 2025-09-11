@@ -3,13 +3,49 @@ return {
     'sainnhe/everforest',
     priority = 1000,
     config = function()
+      -- Everforest options
       vim.g.everforest_background = 'hard' -- Options: 'hard', 'medium', 'soft'
-      vim.g.everforest_enable_italic = 0 -- Enable italic comments and keywords
-      vim.cmd.colorscheme 'everforest' -- Set Everforest as the active theme
+      vim.g.everforest_enable_italic = 0 -- Italics for comments/keywords
+
+      -- Load colorscheme
+      vim.cmd.colorscheme 'everforest'
+
+      -- Override highlights (example: darker background)
+      vim.api.nvim_set_hl(0, 'Normal', { bg = '#111111', fg = '#d3c6aa' })
+      vim.api.nvim_set_hl(0, 'NormalFloat', { bg = '#111111' })
+      vim.api.nvim_set_hl(0, 'SignColumn', { bg = '#111111' })
     end,
   },
 
-  { 'projekt0n/caret.nvim' },
+  {
+    'aktersnurra/no-clown-fiesta.nvim',
+    lazy = false, -- load at startup (set to true if you want lazy-load by event/cmd)
+    priority = 1000, -- make sure it loads before other UI plugins
+    config = function()
+      require('no-clown-fiesta').setup {
+        transparent = false, -- Enable this to disable the bg color
+        styles = {
+          -- You can set any of the style values specified for `:h nvim_set_hl`
+          comments = {},
+          functions = {},
+          keywords = {},
+          lsp = {},
+          match_paren = {},
+          type = {},
+          variables = {},
+        },
+      }
+      --      vim.cmd.colorscheme 'no-clown-fiesta'
+    end,
+  },
+  {
+    'xero/miasma.nvim',
+    lazy = false,
+    priority = 1000,
+    config = function()
+      -- vim.cmd 'colorscheme miasma'
+    end,
+  },
   {
     'catppuccin/nvim',
     event = 'VimEnter',
@@ -48,32 +84,8 @@ return {
   },
 
   -- Theme collection
-  'tckmn/hotdog.vim',
-  'rktjmp/lush.nvim',
-  'dundargoc/fakedonalds.nvim',
-  'craftzdog/solarized-osaka.nvim',
   { 'rose-pine/neovim', name = 'rose-pine' },
-  'eldritch-theme/eldritch.nvim',
   'jesseleite/nvim-noirbuddy',
-  'miikanissi/modus-themes.nvim',
-  'rebelot/kanagawa.nvim',
-  'gremble0/yellowbeans.nvim',
-  'rockyzhang24/arctic.nvim',
-  'folke/tokyonight.nvim',
-  'Shatur/neovim-ayu',
   'RRethy/base16-nvim',
-  'xero/miasma.nvim',
-  'cocopon/iceberg.vim',
-  'kepano/flexoki-neovim',
-  'ntk148v/komau.vim',
-  'uloco/bluloco.nvim',
-  'LuRsT/austere.vim',
   'ricardoraposo/gruvbox-minor.nvim',
-  'NTBBloodbath/sweetie.nvim',
-  {
-    'maxmx03/fluoromachine.nvim',
-    config = function()
-      require('fluoromachine').setup { glow = true, theme = 'fluoromachine' }
-    end,
-  },
 }

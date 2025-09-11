@@ -2,7 +2,7 @@ return {
   'ibhagwan/fzf-lua',
   event = 'VimEnter',
   dependencies = {
-    -- { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font }, -- Optional icons
+    { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font }, -- Optional icons
     { 'nvim-lua/plenary.nvim' }, -- Optional, but useful
   },
   config = function()
@@ -13,9 +13,9 @@ return {
       winopts = {
         height = 0.85,
         width = 0.80,
-        row = 0.35,
-        col = 0.50,
-        preview = { layout = 'right' },
+        row = 0.5,
+        col = 0.5,
+        preview = { border = 'rounded', wrap = false, horizontal = 'right:50%', title = true, title_pos = 'center' },
       },
       files = { -- file picker options
         previewer = true,
