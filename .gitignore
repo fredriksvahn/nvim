@@ -4,5 +4,13 @@ test.sh
 nvim
 
 spell/
-lazy-lock.json
 *.txt
+
+# Logs
+*.log
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
