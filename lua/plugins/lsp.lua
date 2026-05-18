@@ -35,14 +35,14 @@ return {
         map('<leader>cw', ':noautocmd w<CR>', '[C]ode [Write] Buffer without formatting')
         -- Inlay hints toggle if supported
         local client = vim.lsp.get_client_by_id(event.data.client_id)
-        if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
+        if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
           map('<leader>th', function()
             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
           end, '[T]oggle Inlay [H]ints')
         end
 
         -- Highlight symbol under cursor if supported
-        if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
+        if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
           local highlight_group = vim.api.nvim_create_augroup('kickstart-lsp-highlight', { clear = false })
 
           vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
@@ -95,8 +95,15 @@ return {
       pyright = {},
     }
 
-    -- Mason setup and tools installer
-    require('mason').setup()
+    -- Mason setup and tools installer.
+    -- Crashdummyy registry is required for the `roslyn` package (Microsoft.CodeAnalysis.LanguageServer)
+    -- — not yet in mason's main registry as of 2026.
+    require('mason').setup {
+      registries = {
+        'github:mason-org/mason-registry',
+        'github:Crashdummyy/mason-registry',
+      },
+    }
 
     -- Automatically ensure listed LSP servers and tools are installed
     local ensure_installed = vim.tbl_keys(servers)
@@ -107,6 +114,7 @@ return {
       'black', -- Python formatter
       'isort', -- Python import sorter
       'markdownlint', -- Markdown linter
+      'roslyn', -- C# language server (consumed by roslyn.nvim, not mason-lspconfig)
     })
     require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 

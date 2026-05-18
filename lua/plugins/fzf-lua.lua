@@ -32,6 +32,9 @@ return {
       },
     }
 
+    -- Take over vim.ui.select so :Roslyn target, code-action pickers, etc. use fzf
+    fzf.register_ui_select()
+
     vim.keymap.set('n', '<leader>fo', function()
       local function git_actions_menu()
         local actions = {
@@ -78,11 +81,23 @@ return {
     end)
 
     vim.keymap.set('n', '<leader>fC', fzf.colorschemes, { desc = '[F]ind [C]olorschemes' })
-    vim.keymap.set('n', '<leader>ff', function()
-      local cwd = vim.fn.systemlist('git rev-parse --show-toplevel')[1]
-      cwd = vim.fn.trim(cwd)
+    -- Translate Windows paths (C:/foo, C:\foo) to WSL paths (/mnt/c/foo).
+    -- Needed when git.exe is on PATH and returns Windows-style paths from inside WSL.
+    local function win_to_wsl(path)
+      if not path or path == '' then
+        return path
+      end
+      path = path:gsub('\\', '/')
+      return (path:gsub('^([A-Za-z]):', function(drive)
+        return '/mnt/' .. drive:lower()
+      end))
+    end
 
-      if cwd == '' then
+    vim.keymap.set('n', '<leader>ff', function()
+      local cwd = vim.fn.trim(vim.fn.systemlist('git rev-parse --show-toplevel')[1] or '')
+      cwd = win_to_wsl(cwd)
+
+      if cwd == '' or vim.fn.isdirectory(cwd) == 0 then
         cwd = vim.fn.expand '%:p:h'
       end
 
