@@ -87,3 +87,12 @@ keymap.set('v', '>', '>gv', { desc = 'Indent right and stay in indent mode' })
 -- Search for highlighted text in buffer
 keymap.set('v', '//', 'y/<C-R>"<CR>', { desc = 'Search for highlighted text in buffer' })
 
+-- Claude Code: open `claude` in a tmux pane next to nvim (or a vsplit terminal if not in tmux)
+keymap.set('n', '<leader>cl', function()
+  if os.getenv 'TMUX' then
+    vim.fn.system { 'tmux', 'split-window', '-h', '-c', vim.fn.getcwd(), 'claude' }
+  else
+    vim.cmd 'vsplit | terminal claude'
+  end
+end, { silent = true, desc = '[C]laude code in pane' })
+
