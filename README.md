@@ -112,7 +112,7 @@ Highlights:
 | `gd`, `gr` | LSP definitions / references (via fzf-lua) |
 | `<Space>` (wait) | which-key: browse every leader binding by category |
 
-![codecompanion](docs/screenshot-codecompanion.png)
+![claude code in tmux pane](docs/screenshot-claude-code.png)
 
 ## Maintenance
 
