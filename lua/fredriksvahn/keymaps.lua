@@ -4,7 +4,7 @@ keymap.set('n', '<leader>r', ':%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Lef
 
 keymap.set('n', '<C-a>', '<C-w>p', { silent = true, desc = 'Switch to Last Window' })
 keymap.set('n', '<space><space>i', ':e ~/.config/nvim/<CR>', { desc = 'Open [I]nit config' })
-keymap.set('n', '<leader>ss', ':!tmux popup -E bash ~/.tmux/scripts/tmux-sessionizer.sh<CR>')
+keymap.set('n', '<leader>ss', ':!tmux popup -E bash ~/.tmux/scripts/tmux-sessionizer.sh<CR>', { desc = '[S]ession [S]essionizer' })
 keymap.set("n", "<leader>sk", function()
   local in_tmux = os.getenv("TMUX") ~= nil
   if in_tmux then
@@ -15,7 +15,7 @@ keymap.set("n", "<leader>sk", function()
     -- Fallback outside tmux (fzf in a terminal split)
     vim.cmd([[split | terminal bash -lc 'tmux ls -F "#S" | fzf --multi | xargs -r -n1 tmux kill-session -t']])
   end
-end, { silent = true })
+end, { silent = true, desc = '[S]ession [K]ill tmux session' })
 
 keymap.set('v', 'J', ":m '>+1<CR>gv=gv", { desc = 'Move selected line [J]own' })
 keymap.set('v', 'K', ":m '<-2<CR>gv=gv", { desc = 'Move selected line [K]up' })
@@ -64,10 +64,7 @@ keymap.set('t', '<C-t>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 -- keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>', { desc = 'Discourage using [Up] arrow' })
 -- keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>', { desc = 'Discourage using [Down] arrow' })
 
-keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
-keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
-keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
-keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+-- Window navigation (<C-h/j/k/l>) handled by nvim-tmux-navigation plugin
 
 -- Copy text to " register
 keymap.set('n', '<leader>y', '"+y', { desc = '[Y]ank selected text into " register in normal mode' })

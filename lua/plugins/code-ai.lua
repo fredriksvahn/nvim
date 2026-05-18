@@ -75,23 +75,14 @@ return {
 
     -- Set up key mappings
     local keymap = vim.keymap.set
-    local opts = { noremap = true, silent = true }
+    local function map_opts(desc)
+      return { noremap = true, silent = true, desc = desc }
+    end
 
-    -- Main CodeCompanion commands
-    keymap("n", "<leader>cc", "<cmd>CodeCompanionActions<cr>", opts)
-    keymap("v", "<leader>cc", "<cmd>CodeCompanionActions<cr>", opts)
-    keymap("n", "<leader>co", "<cmd>CodeCompanion<cr>", opts)
-
-    -- Chat commands
-    keymap("n", "<leader>ct", "<cmd>CodeCompanionChat Toggle<cr>", opts)
-    keymap("v", "<leader>ca", "<cmd>CodeCompanionChat Add<cr>", opts)
-
-    -- Inline commands
-    keymap("n", "<leader>ci", "<cmd>CodeCompanionCmd<cr>", opts)
-    keymap("v", "<leader>ci", "<cmd>CodeCompanionCmd<cr>", opts)
-
-    -- Quick actions
-    keymap("v", "<leader>ce", "<cmd>CodeCompanionActions<cr>", opts)
-    keymap("v", "<leader>cg", "<cmd>CodeCompanionChat Add<cr>", opts)
+    keymap({ 'n', 'v' }, '<leader>cc', '<cmd>CodeCompanionActions<cr>', map_opts 'CodeCompanion actions')
+    keymap('n', '<leader>co', '<cmd>CodeCompanion<cr>', map_opts 'CodeCompanion open')
+    keymap('n', '<leader>ct', '<cmd>CodeCompanionChat Toggle<cr>', map_opts 'CodeCompanion chat toggle')
+    keymap({ 'n', 'v' }, '<leader>ci', '<cmd>CodeCompanionCmd<cr>', map_opts 'CodeCompanion inline cmd')
+    keymap('v', '<leader>cg', '<cmd>CodeCompanionChat Add<cr>', map_opts 'CodeCompanion add selection to chat')
   end,
 }

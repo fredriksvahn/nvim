@@ -106,6 +106,8 @@ return {
 
     vim.keymap.set('n', '<leader>fz', fzf.grep, { desc = '[F]ind with Args' })
 
+    vim.keymap.set('n', '<leader>fk', fzf.keymaps, { desc = '[F]ind [K]eymaps' })
+
     vim.keymap.set('n', '<leader>ghr', fzf.git_commits, { desc = '[G]it [H]istory (commits)' })
     vim.keymap.set('n', '<leader>ghp', fzf.git_branches, { desc = '[G]it [P]ull Requests (branches)' }) -- Needs customization for PRs
   end,
