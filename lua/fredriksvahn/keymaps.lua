@@ -167,3 +167,33 @@ keymap.set('n', '<leader>jj', function()
   float_term 'ji'
 end, { desc = '[J]ira interactive browser' })
 
+keymap.set('n', '<leader>jr', function()
+  local t = current_ticket()
+  if not t then
+    vim.notify('No SVD-NNNN ticket found in branch name', vim.log.levels.WARN)
+    return
+  end
+  float_term('ji review ' .. t)
+end, { desc = '[J]ira [R]eview PR for current branch' })
+
+-- Yank visual selection to Windows clipboard with UTF-16LE+BOM so Swedish
+-- characters (å/ä/ö) survive when pasted into Teams/Outlook/etc.
+keymap.set('v', '<leader>yt', function()
+  vim.cmd 'normal! "ay'
+  local text = vim.fn.getreg 'a'
+  vim.fn.system({ 'bash', '-c', "{ printf '\\xff\\xfe'; cat | iconv -f UTF-8 -t UTF-16LE; } | clip.exe" }, text)
+  if vim.v.shell_error == 0 then
+    vim.notify 'Copied to Windows clipboard (UTF-16LE for Swedish)'
+  else
+    vim.notify('Clipboard copy failed', vim.log.levels.ERROR)
+  end
+end, { desc = '[Y]ank for [T]eams (UTF-16LE clipboard)' })
+
+-- Open current branch's PR in the browser via gh
+keymap.set('n', '<leader>gP', function()
+  vim.fn.system 'gh pr view --web'
+  if vim.v.shell_error ~= 0 then
+    vim.notify('No PR for current branch (or gh not configured)', vim.log.levels.WARN)
+  end
+end, { desc = '[G]it open [P]R in browser' })
+
