@@ -3,7 +3,6 @@ local keymap = vim.keymap
 keymap.set('n', '<leader>r', ':%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>', { desc = '[R]eplace word under cursor' })
 
 keymap.set('n', '<C-a>', '<C-w>p', { silent = true, desc = 'Switch to Last Window' })
-keymap.set('n', '<leader>w', ':setlocal formatoptions-=cro<CR>:w<CR>', { noremap = true, silent = true, desc = '[W]rite without auto comment' })
 keymap.set('n', '<space><space>i', ':e ~/.config/nvim/<CR>', { desc = 'Open [I]nit config' })
 keymap.set('n', '<leader>ss', ':!tmux popup -E bash ~/.tmux/scripts/tmux-sessionizer.sh<CR>')
 keymap.set("n", "<leader>sk", function()
