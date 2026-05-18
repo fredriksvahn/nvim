@@ -25,6 +25,8 @@ return {
       { '<leader>f', group = '[F]ind' },
       { '<leader>g', group = '[G]it' },
       { '<leader>gh', group = '[G]it [H]istory' },
+      { '<leader>j', group = '[J]ira' },
+      { '<leader>o', group = '[O]cto / PRs' },
       { '<leader>p', group = '[P]ersistence' },
       { '<leader>r', group = '[R]ename / Roslyn' },
       { '<leader>s', group = '[S]ession' },

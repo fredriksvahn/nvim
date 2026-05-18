@@ -93,3 +93,46 @@ keymap.set('n', '<leader>cl', function()
   end
 end, { silent = true, desc = '[C]laude code in pane' })
 
+-- Worktree picker (uses fzf-lua over `git worktree list`)
+keymap.set('n', '<leader>gw', function()
+  local raw = vim.fn.systemlist 'git worktree list'
+  if vim.v.shell_error ~= 0 or #raw == 0 then
+    vim.notify('Not in a git repo or no worktrees', vim.log.levels.WARN)
+    return
+  end
+  require('fzf-lua').fzf_exec(raw, {
+    prompt = 'Worktrees> ',
+    actions = {
+      ['default'] = function(selected)
+        local path = selected[1]:match '^(%S+)'
+        path = path and path:gsub('\\', '/'):gsub('^([A-Za-z]):', function(d)
+          return '/mnt/' .. d:lower()
+        end)
+        if path and vim.fn.isdirectory(path) == 1 then
+          vim.cmd('cd ' .. vim.fn.fnameescape(path))
+          vim.notify('cwd → ' .. path)
+        end
+      end,
+    },
+  })
+end, { desc = '[G]it [W]orktree picker' })
+
+-- Jira: extract SVD-NNNN ticket from current branch and run ji commands
+local function current_ticket()
+  local branch = vim.fn.trim(vim.fn.systemlist('git rev-parse --abbrev-ref HEAD')[1] or '')
+  return branch:match 'SVD%-%d+'
+end
+
+keymap.set('n', '<leader>jv', function()
+  local t = current_ticket()
+  if not t then
+    vim.notify('No SVD-NNNN ticket found in branch name', vim.log.levels.WARN)
+    return
+  end
+  vim.cmd('split | terminal ji get ' .. t)
+end, { desc = '[J]ira [V]iew ticket for current branch' })
+
+keymap.set('n', '<leader>jl', function()
+  vim.cmd 'split | terminal ji last'
+end, { desc = '[J]ira [L]ast viewed ticket' })
+
