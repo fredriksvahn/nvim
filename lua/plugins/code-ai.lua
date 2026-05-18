@@ -3,7 +3,6 @@ return {
   dependencies = {
     "nvim-lua/plenary.nvim",
     "nvim-treesitter/nvim-treesitter",
-    "nvim-telescope/telescope.nvim", -- Optional: for enhanced UI
     "hrsh7th/nvim-cmp", -- Optional: for autocompletion
   },
   config = function()

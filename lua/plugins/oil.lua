@@ -5,6 +5,9 @@ return {
     config = function()
       require('oil').setup {
         columns = {},
+        win_options = {
+          winhl = 'Normal:OilNormal,SignColumn:OilNormal',
+        },
         keymaps = {
           ['<C-h>'] = false,
           ['<C-l>'] = false,
@@ -12,7 +15,7 @@ return {
           ['<C-j>'] = false,
           ['<M-h>'] = 'actions.select_split',
         },
-        watch_for_changes = true,
+        watch_for_changes = false, -- WSL2 inotify is slow; disable to avoid lag
         view_options = {
           show_hidden = true,
         },

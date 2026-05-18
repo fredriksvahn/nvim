@@ -72,6 +72,7 @@ return {
     capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
     -- List of language servers to install and configure
+    -- Note: C# is handled by roslyn.nvim (see lsp-roslyn.lua), not here
     local servers = {
       -- SQL language server
       sqlls = {
@@ -86,61 +87,12 @@ return {
           },
         },
       },
-      -- C# language server (Omnisharp)
-      omnisharp = {
-        cmd = { 'omnisharp', '--languageserver', '--hostPID', tostring(vim.fn.getpid()) },
-        enable_roslyn_analyzers = true,
-        organize_imports_on_format = true,
-        enable_import_completion = true,
-        -- You can enable semantic tokens if you want semantic highlighting
-        capabilities = vim.tbl_deep_extend('force', capabilities, {
-          textDocument = {
-            semanticTokens = {
-              dynamicRegistration = false,
-              requests = {
-                range = true,
-                full = { delta = true },
-              },
-              tokenTypes = {
-                'namespace',
-                'type',
-                'class',
-                'enum',
-                'interface',
-                'struct',
-                'typeParameter',
-                'parameter',
-                'variable',
-                'property',
-                'enumMember',
-                'event',
-                'function',
-                'method',
-                'macro',
-                'keyword',
-                'modifier',
-                'comment',
-                'string',
-                'number',
-                'regexp',
-                'operator',
-              },
-              tokenModifiers = {
-                'declaration',
-                'definition',
-                'readonly',
-                'static',
-                'deprecated',
-                'abstract',
-                'async',
-                'modification',
-                'documentation',
-                'defaultLibrary',
-              },
-            },
-          },
-        }),
-      },
+      -- TypeScript / JavaScript
+      ts_ls = {},
+      -- Go
+      gopls = {},
+      -- Python
+      pyright = {},
     }
 
     -- Mason setup and tools installer
@@ -150,7 +102,11 @@ return {
     local ensure_installed = vim.tbl_keys(servers)
     vim.list_extend(ensure_installed, {
       'stylua', -- Lua formatter
-      -- Add other formatters/linters like 'csharpier' for C#, 'sql-formatter' for SQL if needed
+      'prettierd', -- JS/TS formatter
+      'goimports', -- Go formatter/import organiser
+      'black', -- Python formatter
+      'isort', -- Python import sorter
+      'markdownlint', -- Markdown linter
     })
     require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 

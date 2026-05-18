@@ -10,12 +10,6 @@ return {
       return vim.fn['codeium#Clear']()
     end, { expr = true, silent = true, desc = '[C]odeium [X]it' })
 
-    vim.keymap.set('i', '<C-]>', function()
-      return vim.fn
-    end, { expr = true, silent = true, desc = 'Codeium Cycle Completions Next' })
-
-    vim.keymap.set('n', '<C-a>', '<C-w>p', { silent = true, desc = 'Switch to Last Window' })
-
     vim.g.codeium_filetypes = {
       markdown = false,
     }

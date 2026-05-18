@@ -2,7 +2,11 @@ return {
   'folke/zen-mode.nvim',
   opts = (function()
     local function get_monitor_based_zen_size()
-      local handle = io.popen 'hyprctl monitors -j'
+      if vim.fn.executable 'hyprctl' == 0 then
+        return { width = 0.35, height = 0.83 }
+      end
+
+      local handle = io.popen 'hyprctl monitors -j 2>/dev/null'
       if handle == nil then
         return { width = 0.35, height = 0.83 }
       end

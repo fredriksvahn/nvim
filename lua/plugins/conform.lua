@@ -76,8 +76,10 @@ return {
       go = { 'goimports' },
       terraform = { 'terraform' },
       dockerfile = { 'dockfmt' },
-      -- cs = { 'csharpier' },
+      -- cs: handled by roslyn LSP via lsp_format fallback
       sql = { 'sql_formatter' },
+      json = { 'prettierd', 'prettier', stop_after_first = true },
+      jsonc = { 'prettierd', 'prettier', stop_after_first = true },
     },
   },
 }
