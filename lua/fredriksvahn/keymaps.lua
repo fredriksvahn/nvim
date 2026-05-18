@@ -136,3 +136,7 @@ keymap.set('n', '<leader>jl', function()
   vim.cmd 'split | terminal ji last'
 end, { desc = '[J]ira [L]ast viewed ticket' })
 
+keymap.set('n', '<leader>jj', function()
+  vim.cmd 'split | terminal ji'
+end, { desc = '[J]ira interactive browser' })
+
