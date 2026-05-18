@@ -52,7 +52,7 @@ WSL2 specific:
 mv ~/.config/nvim ~/.config/nvim.bak 2>/dev/null
 
 # Clone
-git clone https://github.com/fredriksvahn/kickstart.nvim.git ~/.config/nvim
+git clone https://github.com/fredriksvahn/nvim.git ~/.config/nvim
 
 # Launch — lazy.nvim will install plugins on first run
 nvim
