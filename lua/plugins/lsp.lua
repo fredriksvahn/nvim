@@ -80,9 +80,14 @@ return {
       },
       -- Lua language server with customized settings
       lua_ls = {
+        on_init = function(client)
+          -- stylua via conform handles Lua formatting; disable lua_ls formatting to avoid conflict
+          client.server_capabilities.documentFormattingProvider = false
+        end,
         settings = {
           Lua = {
             completion = { callSnippet = 'Replace' },
+            format = { enable = false },
             -- diagnostics = { disable = { 'missing-fields' } }, -- Uncomment to suppress specific warnings
           },
         },

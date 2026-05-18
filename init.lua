@@ -1,3 +1,5 @@
+vim.loader.enable()
+
 require 'fredriksvahn/options'
 require 'fredriksvahn/keymaps'
 require 'fredriksvahn/autocmds'
