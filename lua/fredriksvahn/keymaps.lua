@@ -117,6 +117,33 @@ keymap.set('n', '<leader>gw', function()
   })
 end, { desc = '[G]it [W]orktree picker' })
 
+-- Open a command in a centered floating terminal that auto-closes on exit.
+-- Used for ji invocations so the browser feels modal rather than a split.
+local function float_term(cmd)
+  local buf = vim.api.nvim_create_buf(false, true)
+  local width = math.floor(vim.o.columns * 0.85)
+  local height = math.floor(vim.o.lines * 0.85)
+  local win = vim.api.nvim_open_win(buf, true, {
+    relative = 'editor',
+    width = width,
+    height = height,
+    row = math.floor((vim.o.lines - height) / 2),
+    col = math.floor((vim.o.columns - width) / 2),
+    style = 'minimal',
+    border = 'rounded',
+  })
+  vim.fn.termopen(cmd, {
+    on_exit = function()
+      vim.schedule(function()
+        if vim.api.nvim_win_is_valid(win) then
+          vim.api.nvim_win_close(win, true)
+        end
+      end)
+    end,
+  })
+  vim.cmd 'startinsert'
+end
+
 -- Jira: extract SVD-NNNN ticket from current branch and run ji commands
 local function current_ticket()
   local branch = vim.fn.trim(vim.fn.systemlist('git rev-parse --abbrev-ref HEAD')[1] or '')
@@ -129,14 +156,14 @@ keymap.set('n', '<leader>jv', function()
     vim.notify('No SVD-NNNN ticket found in branch name', vim.log.levels.WARN)
     return
   end
-  vim.cmd('split | terminal ji get ' .. t)
+  float_term('ji get ' .. t)
 end, { desc = '[J]ira [V]iew ticket for current branch' })
 
 keymap.set('n', '<leader>jl', function()
-  vim.cmd 'split | terminal ji last'
+  float_term 'ji last'
 end, { desc = '[J]ira [L]ast viewed ticket' })
 
 keymap.set('n', '<leader>jj', function()
-  vim.cmd 'split | terminal ji'
+  float_term 'ji'
 end, { desc = '[J]ira interactive browser' })
 
