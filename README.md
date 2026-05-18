@@ -26,7 +26,6 @@ Fredrik's personal Neovim configuration. Built for daily driving on WSL2, with a
 | Formatting | [conform.nvim](https://github.com/stevearc/conform.nvim) |
 | Syntax | [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) |
 | Git | [gitsigns](https://github.com/lewis6991/gitsigns.nvim) + lazygit |
-| Database | [vim-dadbod-ui](https://github.com/kristijanhusak/vim-dadbod-ui) |
 | Zen | [zen-mode](https://github.com/folke/zen-mode.nvim) |
 
 ![fuzzy](docs/screenshot-fzf.png)
@@ -85,7 +84,7 @@ sudo apt install dotnet-sdk-10.0
 │   │   ├── keymaps.lua            keymaps
 │   │   ├── autocmds.lua           auto-loads everything under utils/
 │   │   ├── theme.lua              everforest darken overrides
-│   │   └── utils/                 misc setup files (diagnostics, global usings, …)
+│   │   └── utils/                 auto-loaded setup files (diagnostics, …)
 │   └── plugins/                   one file per plugin / domain — auto-imported by lazy
 └── KEYMAP_README.md               generated keymap cheat sheet
 ```
@@ -101,14 +100,17 @@ Highlights:
 | `<leader>ff` | Find file in git repo root (auto-handles `/mnt/c` paths) |
 | `<leader>fG` | Live grep across project |
 | `<leader>fn` | Find file in nvim config |
+| `<leader>fk` | Search all keymaps fuzzily |
 | `-` | Open parent dir in oil |
 | `<leader>cc` | CodeCompanion actions |
 | `<leader>ct` | CodeCompanion chat toggle |
+| `<leader>cl` | Claude Code in tmux pane (or vsplit if no tmux) |
 | `<leader>rt` | Roslyn: pick target solution |
 | `<leader>rR` | Roslyn: restart server |
 | `<leader>ts` | Toggle format-on-save |
 | `<leader>z` | Zen mode |
 | `gd`, `gr` | LSP definitions / references (via fzf-lua) |
+| `<Space>` (wait) | which-key: browse every leader binding by category |
 
 ![codecompanion](docs/screenshot-codecompanion.png)
 
